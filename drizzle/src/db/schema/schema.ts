@@ -172,3 +172,9 @@ export const blogTag = pgTable(
 
 
 export type Blog= InferSelectModel<typeof blog>
+
+export type Tag=InferSelectModel<typeof tag>
+
+export type BlogWithTag = Blog&{
+  tags:Tag[]
+}

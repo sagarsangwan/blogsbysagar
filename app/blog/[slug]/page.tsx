@@ -1,10 +1,9 @@
-// import { notFound } from 'next/navigation';
 
-// import { BlogDetail } from '@/components/blog/blog-detail';
-import { Metadata } from 'next';
 import { db } from '@/drizzle/src/db';
-import { blog } from '@/drizzle/src/db/schema';
+import { blog, blogTag, BlogWithTag, Tag, tag } from '@/drizzle/src/db/schema';
 import { eq } from 'drizzle-orm';
+import BlogEngagementDetails from '@/components/blog/blog-engagement-details';
+import BlogTags from '@/components/blog/blog-tags';
 
 interface Params {
   slug: string;
@@ -56,27 +55,44 @@ interface Params {
 //   };
 // }
 
+export async function GetBlogWithTag(slug:string):Promise<BlogWithTag|null>{
+const rows = await db.select({
+  blog:blog,
+  tag:tag
+}).from(blog).leftJoin(blogTag, eq(blog.id, blogTag.blogId))
+.leftJoin(tag, eq(blogTag.tagId, tag.id))
+.where(eq(blog.slug, slug))
+if (rows.length === 0) return null;
+
+const blogData = rows[0].blog;
+const tags= rows.map((r)=>r.tag).filter((t):t is Tag=>t!==null)
+return{
+  ...blogData,
+  tags
+}
+}
+
 export default async function BlogPage(
   { params }: { params: Promise<Params> }
 ) {
   const { slug } = await params;
-  const currentBlog = await db.select().from(blog).where(eq(blog.slug, slug)).limit(1)
+  const currentBlog = await GetBlogWithTag(slug)
     console.log(currentBlog)
-  if (currentBlog.length == 0) {
+  if (!currentBlog) {
     return(<div>not found </div>)
   }
 
   return (
     <div className="mt-4 flex flex-col md:justify-center md:items-center md:content-center gap-4">
-      <h1 className="text-4xl font-bold my-3">{currentBlog?.[0].title}</h1>
-      {/* <BlogEngagementDetails blog={blog} isAdmin={isAdmin} /> */}
+      <h1 className="text-4xl font-bold my-3">{currentBlog.title}</h1>
+      <BlogEngagementDetails blog={currentBlog}  />
 
       <div
         className="prose-headings:font-title font-default prose mt-4 dark:prose-invert focus:outline-none justify-center content-center"
-        dangerouslySetInnerHTML={{ __html: currentBlog?.[0].content }}
+        dangerouslySetInnerHTML={{ __html: currentBlog.content }}
       ></div>
 
-      {/* {currentBlog?.[0].tags.length > 0 && <BlogTags blogTags={currentBlog?.[0].tags} />} */}
+      {currentBlog.tags.length > 0 && <BlogTags blogTags={currentBlog.tags} />}
       {/* <AuthorProfile author={currentBlog?.[0].author} /> */}
 
       {/* <div>
