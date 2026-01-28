@@ -10,7 +10,9 @@ const nextConfig: NextConfig = {
       "https://medium.com/",
       "media2.dev.to",
       "cdn-images-1.medium.com",
-      "miro.medium.com"
+      "miro.medium.com",
+            "https://drive.google.com",
+
     ],
   },
   /* config options here */

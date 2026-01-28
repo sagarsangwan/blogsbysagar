@@ -9,6 +9,7 @@ import IncrementView from './increment-views';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import RelatedBlogs from '@/components/blog/related-blog';
+import AuthorProfile from '@/components/blog/author-profile';
 
 interface Params {
   slug: string;
@@ -45,7 +46,7 @@ export default async function BlogPage(
 ) {
   const { slug } = await params;
   const currentBlog = await GetBlogWithTag(slug)
-      
+        // console.log(currentBlog?.content)
   if (!currentBlog) {
     return(<div>not found </div>)
   }
@@ -60,14 +61,15 @@ export default async function BlogPage(
         className="prose-headings:font-title font-default prose mt-4 dark:prose-invert focus:outline-none justify-center content-center"
         dangerouslySetInnerHTML={{ __html: currentBlog.content }}
       ></div>
+      
 
       {currentBlog.tags.length > 0 && <BlogTags blogTags={currentBlog.tags} />}
-      {/* <AuthorProfile author={currentBlog?.[0].author} /> */}
+      <AuthorProfile />
 
       <div>
         {currentBlog.tags.length > 0 && (
           <>
-            <p className="text-xl text-green-400 my-4">
+            <p className="text-xl text-violet-400 my-4">
               <Link href="/blogs"> View more blogs by me CLICK HERE</Link>
             </p>
             <RelatedBlogs

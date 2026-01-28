@@ -1,15 +1,43 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "api.microlink.io",
-      "lh3.googleusercontent.com",
-      "https://sagarsangwan.app/",
-      "https://github.com/",
-      "https://medium.com/",
-      "media2.dev.to",
-      "cdn-images-1.medium.com",
-      "miro.medium.com",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "api.microlink.io",
+      },
+      {
+        protocol: "https",
+        hostname: "*.googleusercontent.com", // Supports all subdomains for Google profile pics
+      },
+      {
+        protocol: "https",
+        hostname: "sagarsangwan.app",
+      },
+      {
+        protocol: "https",
+        hostname: "github.com",
+      },
+      {
+        protocol: "https",
+        hostname: "medium.com",
+      },
+      {
+        protocol: "https",
+        hostname: "media2.dev.to",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn-images-1.medium.com",
+      },
+      {
+        protocol: "https",
+        hostname: "miro.medium.com",
+      },
+      {
+        protocol: "https",
+        hostname: "drive.google.com",
+      },
     ],
   },
 };
