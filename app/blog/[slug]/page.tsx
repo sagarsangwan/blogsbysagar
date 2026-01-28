@@ -1,59 +1,27 @@
 
 import { db } from '@/drizzle/src/db';
 import { blog, blogTag, BlogWithTag, Tag, tag } from '@/drizzle/src/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq  } from 'drizzle-orm';
 import BlogEngagementDetails from '@/components/blog/blog-engagement-details';
 import BlogTags from '@/components/blog/blog-tags';
+import { NewsletterSignup } from '@/components/newsletter';
+import IncrementView from './increment-views';
+import { cookies } from 'next/headers';
+import Link from 'next/link';
+import RelatedBlogs from '@/components/blog/related-blog';
 
 interface Params {
   slug: string;
 }
 
-// async function getBlog(slug: string) {
-//   try {
-//     const result = await sql`
-//       SELECT * FROM "Blog"
-//       WHERE slug = ${slug} AND published = true
-//     `;
-//     return result.length > 0 ? result[0] : null;
-//   } catch (error) {
-//     console.error('[v0] Blog fetch error:', error);
-//     return null;
-//   }
-// }
 
-// export async function generateMetadata(
-//   { params }: { params: Promise<Params> }
-// ): Promise<Metadata> {
-//   const { slug } = await params;
-//   const blog = await getBlog(slug);
+async function checkIfViewed(slug:string){
+  const cookieStore  = await cookies()
+  return cookieStore.get(`viewed-${slug}`)?true:false
+}
 
-//   if (!blog) {
-//     return {
-//       title: 'Post Not Found',
-//       description: 'The blog post you are looking for does not exist.',
-//     };
-//   }
 
-//   return {
-//     title: `${blog.title} | blog.sagarsangwan.dev`,
-//     description: blog.excerpt || blog.title,
-//     openGraph: {
-//       title: blog.title,
-//       description: blog.excerpt || blog.title,
-//       type: 'article',
-//       publishedTime: blog.publishedAt,
-//       images: blog.coverImage ? [blog.coverImage] : [],
-//       authors: ['Sagar Sangwan'],
-//     },
-//     twitter: {
-//       card: 'summary_large_image',
-//       title: blog.title,
-//       description: blog.excerpt || blog.title,
-//       images: blog.coverImage ? [blog.coverImage] : [],
-//     },
-//   };
-// }
+
 
 export async function GetBlogWithTag(slug:string):Promise<BlogWithTag|null>{
 const rows = await db.select({
@@ -77,10 +45,11 @@ export default async function BlogPage(
 ) {
   const { slug } = await params;
   const currentBlog = await GetBlogWithTag(slug)
-    console.log(currentBlog)
+      
   if (!currentBlog) {
     return(<div>not found </div>)
   }
+  const hasViewed = await checkIfViewed(currentBlog.slug)
 
   return (
     <div className="mt-4 flex flex-col md:justify-center md:items-center md:content-center gap-4">
@@ -95,22 +64,22 @@ export default async function BlogPage(
       {currentBlog.tags.length > 0 && <BlogTags blogTags={currentBlog.tags} />}
       {/* <AuthorProfile author={currentBlog?.[0].author} /> */}
 
-      {/* <div>
-        {currentBlog?.[0].tags.length > 0 && (
+      <div>
+        {currentBlog.tags.length > 0 && (
           <>
             <p className="text-xl text-green-400 my-4">
               <Link href="/blogs"> View more blogs by me CLICK HERE</Link>
             </p>
             <RelatedBlogs
-              blogSlug={currentBlog?.[0].slug}
-              tagIds={currentBlog?.[0].tags.map((tag) => tag.tagId)}
+              blogSlug={currentBlog.slug}
+              tagIds={currentBlog.tags.map((tag) => tag.id)}
             />
           </>
         )}
-      </div> */}
+      </div>
 
-      {/* <Newsletter />
-      {!hasViewed && <ClientSideLogic slug={params.slug} blogId={blog.id} />} */}
+      <NewsletterSignup />
+      {!hasViewed && <IncrementView slug={currentBlog.slug} blogId={currentBlog.id} />}
     </div>
   );
 }

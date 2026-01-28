@@ -4,7 +4,7 @@ import React from 'react'
 
 async function Page() {
   const allEmails = await db.select().from(newsletter)
-  console.log(allEmails)
+  
   return (
     <div>
     hii

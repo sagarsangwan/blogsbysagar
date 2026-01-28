@@ -178,3 +178,15 @@ export type Tag=InferSelectModel<typeof tag>
 export type BlogWithTag = Blog&{
   tags:Tag[]
 }
+export type RelatedBlog = {
+  id: string;
+  title: string;
+  slug: string;
+  description: string | null;
+  coverImage: string | null;
+  createdAt: string;
+  updatedAt: string;
+  likes: number;
+  reads: number;
+  tags: { name: string }[];
+};
