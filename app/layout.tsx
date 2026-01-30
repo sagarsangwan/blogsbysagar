@@ -8,6 +8,7 @@ const dmSans = DM_Sans({subsets:['latin'],variable:'--font-sans'});
 import NextTopLoader from 'nextjs-toploader'
 import { BlogNavbar } from "@/components/Navbar";
 import { BlogFooter } from "@/components/Footer";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -74,6 +75,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={dmSans.variable}>
+      <head>
+        {/* Google Analytics */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-N8XH647YNL"
+        />
+        <Script id="ga" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-N8XH647YNL');
+          `}
+        </Script>
+
+        
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
