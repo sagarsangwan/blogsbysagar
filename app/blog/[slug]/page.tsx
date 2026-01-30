@@ -10,6 +10,80 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import RelatedBlogs from '@/components/blog/related-blog';
 import AuthorProfile from '@/components/blog/author-profile';
+// import type { Metadata, OpenGraphArticle } from "next";
+
+import type { Metadata } from "next";
+import Script from 'next/script';
+
+export async function generateMetadata(
+  { params }: { params: { slug: string } }
+): Promise<Metadata> {
+  const blog = await GetBlogWithTag(params.slug);
+
+  if (!blog) {
+    return {
+      title: "Blog Not Found",
+      description: "This blog post does not exist.",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const blogUrl = `https://blogs.sagarsangwan.dev/blog/${blog.slug}`;
+
+  const publishedTime = blog.createdAt
+    ? new Date(blog.createdAt).toISOString()
+    : undefined;
+
+  const modifiedTime = blog.updatedAt
+    ? new Date(blog.updatedAt).toISOString()
+    : undefined;
+
+  return {
+    title: blog.title,
+    description: blog.description ?? blog.title,
+
+    alternates: {
+      canonical: blogUrl,
+    },
+
+    openGraph: {
+      type: "article",
+      url: blogUrl,
+      title: blog.title,
+      description: blog.description ?? blog.title,
+      siteName: "Sagar Sangwan’s Blog",
+
+      images: blog.coverImage
+        ? [
+            {
+              url: blog.coverImage,
+              width: 1200,
+              height: 630,
+              alt: blog.title,
+            },
+          ]
+        : undefined,
+
+      publishedTime,
+      modifiedTime,
+      authors: ["Sagar Sangwan"],
+      tags: blog.tags.map((t) => t.name),
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: blog.title,
+      description: blog.description ?? blog.title,
+      creator: "@iamsagarsangwan",
+      images: blog.coverImage ? [blog.coverImage] : undefined,
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+    },
+  } satisfies Metadata;
+}
 
 interface Params {
   slug: string;
@@ -51,8 +125,37 @@ export default async function BlogPage(
     return(<div>not found </div>)
   }
   const hasViewed = await checkIfViewed(currentBlog.slug)
+    const blogUrl = `https://blogs.sagarsangwan.dev/blog/${blog.slug}`;
 
-  return (
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: currentBlog.title,
+    description: currentBlog.description,
+    image: currentBlog.coverImage,
+    datePublished: currentBlog.createdAt,
+    dateModified: currentBlog.updatedAt,
+    author: {
+      "@type": "Person",
+      name: "Sagar Sangwan",
+      url: "https://www.sagarsangwan.dev",
+    },
+    publisher: {
+      "@type": "Person",
+      name: "Sagar Sangwan",
+      url: "https://www.sagarsangwan.dev",
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": blogUrl,
+    },
+    keywords: currentBlog.tags.map((t) => t.name).join(", "),
+  };
+  return (<>
+  <Script id={currentBlog.id} type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}/>
     <div className="mt-4 flex flex-col md:justify-center md:items-center md:content-center gap-4">
       <h1 className="text-4xl font-bold my-3">{currentBlog.title}</h1>
       <BlogEngagementDetails blog={currentBlog}  />
@@ -85,5 +188,6 @@ export default async function BlogPage(
       <NewsletterSignup />
       {!hasViewed && <IncrementView slug={currentBlog.slug} blogId={currentBlog.id} />}
     </div>
+  </>
   );
 }

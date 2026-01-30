@@ -41,14 +41,14 @@ export const metadata: Metadata = {
     url: "https://blogs.sagarsangwan.dev",
     siteName: "Sagar Sangwan’s Blog",
     type: "website",
-    images: [
-      {
-        url: "/images/blog-og.png", 
-        width: 1200,
-        height: 630,
-        alt: "Sagar Sangwan Blog",
-      },
-    ],
+    // images: [
+    //   {
+    //     url: "/images/blog-og.png", 
+    //     width: 1200,
+    //     height: 630,
+    //     alt: "Sagar Sangwan Blog",
+    //   },
+    // ],
   },
 
   twitter: {
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     title: "Sagar Sangwan’s Blog — Web, AI & Engineering Notes",
     description:
       "Writing about web development, AI systems, and real engineering work by Sagar Sangwan.",
-    images: ["/images/blog-og.png"],
+    // images: ["/images/blog-og.png"],
     creator: "@sagarsangwan", 
   },
 
