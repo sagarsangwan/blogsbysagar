@@ -1,32 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "tailwindcss";
-@import "@tailwindcss/typography"; /* Required for 'prose' classes */
+/* @import "./prosemirror.css" */
+@plugin "@tailwindcss/typography";
 
-/* Custom Novel/Tiptap styles for the data you have in your DB */
-@layer components {
-  /* Style for the code blocks in your HTML data */
-  .prose pre {
-    @apply bg-muted text-muted-foreground border rounded-lg p-4 font-mono text-sm my-4;
-  }
-  .prose code {
-    @apply bg-muted text-primary px-1.5 py-0.5 rounded-md font-mono font-medium;
-  }
-  /* Style for images */
-  .prose img {
-    @apply rounded-lg border border-border my-6;
-  }
-  /* Fix for lists with the 'tight' class from Novel */
-  .prose .tight p {
-    @apply my-0;
-  }
-  /* Style for links */
-  .prose a {
-    @apply text-primary underline underline-offset-4 hover:opacity-80 transition-opacity;
-  }
-}
-
+/* @import url("./prosemirror.css"); */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -73,6 +51,15 @@
 }
 
 :root {
+  --novel-highlight-default: #ffffff;
+    --novel-highlight-purple: #f6f3f8;
+    --novel-highlight-red: #fdebeb;
+    --novel-highlight-yellow: #fbf4a2;
+    --novel-highlight-blue: #c1ecf9;
+    --novel-highlight-green: #acf79f;
+    --novel-highlight-orange: #faebdd;
+    --novel-highlight-pink: #faf1f5;
+    --novel-highlight-gray: #f1f1ef;
   --background: oklch(1 0 0);
   --foreground: oklch(0.147 0.004 49.25);
   --card: oklch(1 0 0);
@@ -108,6 +95,15 @@
 }
 
 .dark {
+  --novel-highlight-default: #000000;
+    --novel-highlight-purple: #3f2c4b;
+    --novel-highlight-red: #5c1a1a;
+    --novel-highlight-yellow: #5c4b1a;
+    --novel-highlight-blue: #1a3d5c;
+    --novel-highlight-green: #1a5c20;
+    --novel-highlight-orange: #5c3a1a;
+    --novel-highlight-pink: #5c1a3a;
+    --novel-highlight-gray: #3a3a3a;
   --background: oklch(0.147 0.004 49.25);
   --foreground: oklch(0.985 0.001 106.423);
   --card: oklch(0.216 0.006 56.043);

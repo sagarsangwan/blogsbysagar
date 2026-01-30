@@ -6,7 +6,7 @@ import Link from "next/link";
 import author from "../../public/images/author.jpeg"
 export default function AuthorProfile() {
   return (
-    <Card className="max-w-2xl mx-auto  bg-white">
+    <Card className="max-w-2xl min-w-sm mx-auto  bg-white">
       <div className="p-4">
         {/* Author info */}
         <CardHeader className="px-0">

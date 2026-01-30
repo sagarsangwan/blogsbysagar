@@ -17,6 +17,7 @@
     "drizzle-orm": "^0.45.1",
     "lucide-react": "^0.563.0",
     "next": "16.1.4",
+    "nextjs-toploader": "^3.9.17",
     "novel": "^1.0.2",
     "pg": "^8.17.2",
     "radix-ui": "^1.4.3",

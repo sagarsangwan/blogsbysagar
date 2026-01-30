@@ -57,10 +57,12 @@ export default async function BlogPage(
       <h1 className="text-4xl font-bold my-3">{currentBlog.title}</h1>
       <BlogEngagementDetails blog={currentBlog}  />
 
-      <div
-        className="prose-headings:font-title font-default prose mt-4 dark:prose-invert focus:outline-none justify-center content-center"
+       <div
+        className="prose"
         dangerouslySetInnerHTML={{ __html: currentBlog.content }}
       ></div>
+      
+
       
 
       {currentBlog.tags.length > 0 && <BlogTags blogTags={currentBlog.tags} />}
