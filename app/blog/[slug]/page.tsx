@@ -16,9 +16,10 @@ import type { Metadata } from "next";
 import Script from 'next/script';
 
 export async function generateMetadata(
-  { params }: { params: { slug: string } }
+   { params }: { params: Promise<Params> }
 ): Promise<Metadata> {
-  const blog = await GetBlogWithTag(params.slug);
+  const { slug } = await params;
+  const blog = await GetBlogWithTag(slug);
 
   if (!blog) {
     return {
