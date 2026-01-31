@@ -38,9 +38,9 @@ export const tag = pgTable(
   (table) => [
     uniqueIndex("Tag_name_key").using(
       "btree",
-      table.name.asc().nullsLast().op("text_ops")
+      table.name.asc().nullsLast().op("text_ops"),
     ),
-  ]
+  ],
 );
 
 /* -------------------- NEWSLETTER -------------------- */
@@ -75,13 +75,13 @@ export const newsletter = pgTable(
   (table) => [
     index("Newsletter_email_idx").using(
       "btree",
-      table.email.asc().nullsLast().op("text_ops")
+      table.email.asc().nullsLast().op("text_ops"),
     ),
     uniqueIndex("Newsletter_email_key").using(
       "btree",
-      table.email.asc().nullsLast().op("text_ops")
+      table.email.asc().nullsLast().op("text_ops"),
     ),
-  ]
+  ],
 );
 
 /* -------------------- BLOG -------------------- */
@@ -108,9 +108,9 @@ export const blog = pgTable(
   (table) => [
     uniqueIndex("Blog_slug_key").using(
       "btree",
-      table.slug.asc().nullsLast().op("text_ops")
+      table.slug.asc().nullsLast().op("text_ops"),
     ),
-  ]
+  ],
 );
 
 /* -------------------- COMMENT -------------------- */
@@ -136,7 +136,7 @@ export const comment = pgTable(
     })
       .onUpdate("cascade")
       .onDelete("restrict"),
-  ]
+  ],
 );
 
 /* -------------------- BLOG TAG -------------------- */
@@ -165,19 +165,18 @@ export const blogTag = pgTable(
     })
       .onUpdate("cascade")
       .onDelete("cascade"),
-  ]
+  ],
 );
 
+export type NewsLetter = InferSelectModel<typeof newsletter>;
+export type Contact = InferSelectModel<typeof contact>;
+export type Blog = InferSelectModel<typeof blog>;
 
+export type Tag = InferSelectModel<typeof tag>;
 
-
-export type Blog= InferSelectModel<typeof blog>
-
-export type Tag=InferSelectModel<typeof tag>
-
-export type BlogWithTag = Blog&{
-  tags:Tag[]
-}
+export type BlogWithTag = Blog & {
+  tags: Tag[];
+};
 export type RelatedBlog = {
   id: string;
   title: string;
