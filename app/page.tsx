@@ -1,4 +1,5 @@
 import { BlogList } from "@/components/blog/blog-list";
+import { ContactForm } from "@/components/contact-form";
 import { Hero } from "@/components/Hero";
 import { NewsletterSignup } from "@/components/newsletter";
 import { db } from "@/drizzle/src/db";
@@ -23,6 +24,7 @@ return (
       <div className="container max-w-4xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
         <BlogList blogs={blogs} />
       </div>
+      <ContactForm/>
       <NewsletterSignup />
     </main>
   );

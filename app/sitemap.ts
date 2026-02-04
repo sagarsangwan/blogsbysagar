@@ -13,7 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .from(blog);
 
   const blogUrls = blogs.map((b) => ({
-    url: `${BASE_URL}/${b.slug}`,
+    url: `${BASE_URL}/blog/${b.slug}`,
     lastModified: b.updatedAt ? new Date(b.updatedAt) : new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.8,
