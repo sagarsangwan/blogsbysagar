@@ -6,6 +6,7 @@ import NextTopLoader from 'nextjs-toploader'
 import { BlogNavbar } from "@/components/Navbar";
 import { BlogFooter } from "@/components/Footer";
 import Script from "next/script";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -84,6 +85,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+         <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
         <NextTopLoader showSpinner={false}/>
         <BlogNavbar/>
        <main className="min-h-screen">
@@ -105,6 +112,7 @@ export default function RootLayout({
             });
           `}
         </Script>
+        </ThemeProvider>
       </body>
     </html>
   );

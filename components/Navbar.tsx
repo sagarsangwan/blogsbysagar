@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ModeToggle } from "./theme-toggle";
 
 export function BlogNavbar() {
   return (
@@ -28,6 +29,7 @@ export function BlogNavbar() {
           </Link> */}
 
           {/* Exit to portfolio */}
+          <ModeToggle/>
           <a
             href="https://www.sagarsangwan.dev"
             className="text-muted-foreground hover:text-foreground"
