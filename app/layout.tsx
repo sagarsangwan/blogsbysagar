@@ -2,22 +2,27 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
-// import "./prosemirror.css"
-// import "novel/plugins.css";
-const dmSans = DM_Sans({subsets:['latin'],variable:'--font-sans'});
 import NextTopLoader from 'nextjs-toploader'
 import { BlogNavbar } from "@/components/Navbar";
 import { BlogFooter } from "@/components/Footer";
 import Script from "next/script";
 
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap', // Ensure swap is used
+});
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: 'swap',
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -75,31 +80,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={dmSans.variable}>
-      <head>
-        {/* Google Analytics */}
+      
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <NextTopLoader showSpinner={false}/>
+        <BlogNavbar/>
+       <main className="min-h-screen">
+          {children}
+        </main>
+        <BlogFooter/>
+        <Toaster richColors />
         <Script
-          async
           src="https://www.googletagmanager.com/gtag/js?id=G-N8XH647YNL"
+          strategy="afterInteractive" 
         />
-        <Script id="ga" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-N8XH647YNL');
+            gtag('config', 'G-N8XH647YNL', {
+              page_path: window.location.pathname,
+            });
           `}
         </Script>
-
-        
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <NextTopLoader/>
-        <BlogNavbar/>
-        {children}
-        <BlogFooter/>
-        <Toaster richColors />
       </body>
     </html>
   );
